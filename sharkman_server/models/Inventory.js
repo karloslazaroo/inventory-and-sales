@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const inventorySchema = new mongoose.Schema({
-    name: String,
+    product_sku: String,
+    product_name: String,
     quantity: Number,
-    price: Number
+    cost_price: Number,
+    sales_price: Number
 })
 
-module.exports = mongoose.model('Inventory', inventySchema);
+module.exports = mongoose.model('Inventory', inventorySchema);
 
 
 

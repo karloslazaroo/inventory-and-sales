@@ -1,0 +1,12 @@
+GET http://localhost:5000/inventory/
+###
+POST http://localhost:5000/inventory
+Content-Type: application/json
+
+{
+    "product_sku": "1234karlos",
+    "product_name": "Welding Machine",
+    "quantity": 12,
+    "cost_price": 2000,
+    "sales_price": 5000
+}
