@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const saleSchema = new mongoose.Schema({
-    item: {
+    product: {
         type: mongoose.Schema.TypesObjectId,
-        ref: 'Inventory'
+        ref: 'Product'
     },
     quantitySold: Number,
     date: {

@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://karloslazaroo:101400karlo@cluster0.eeo2sln.mongodb.net/', {
+mongoose.connect('mongodb+srv://karloslazaroo:101400karlo@cluster0.eeo2sln.mongodb.net/Sharkman', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -20,8 +20,11 @@ db.once('open', ()=> {
 });
 
 
-const inventoryRouter = require('./routes/inventory')
-app.use('/inventory', inventoryRouter)
+const inventoryRouter = require('./routes/product')
+app.use('/product', inventoryRouter)
+
+// const salesRouter = require('./routes/sales')
+// app.use('/sales', salesRouter)
 
 app.listen(5000, () => {
     console.log('Server is running');
