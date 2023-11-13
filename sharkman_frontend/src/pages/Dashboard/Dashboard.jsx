@@ -1,15 +1,15 @@
 import React from 'react'
 import MainLayout from '../../components/MainLayout'
-function Sales() {
+
+
+function Dashboard() {
   return (
     <div>
       <MainLayout>
-      <h1 className="text-3xl font-bold underline">
-      SALES
-    </h1>
+        
       </MainLayout>
     </div>
   )
 }
 
-export default Sales
+export default Dashboard

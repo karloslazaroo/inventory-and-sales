@@ -1,14 +1,14 @@
-GET http://localhost:5000/api/product/
+GET http://localhost:5000/product/
 ###
-POST http://localhost:5000/inventory
+POST http://localhost:5000/product
 Content-Type: application/json
 
 {
-    "product_sku": "1234karlos",
-    "product_name": "Welding Machine",
-    "quantity": 12,
-    "cost_price": 2000,
-    "sales_price": 5000
+    "product_sku": "1234",
+    "product_name": "Diesel Generator",
+    "quantity": 5,
+    "cost_price": 234,
+    "sales_price": 1500
 }
 
 ###
