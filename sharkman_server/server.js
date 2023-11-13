@@ -23,6 +23,9 @@ db.once('open', ()=> {
 const inventoryRouter = require('./routes/product')
 app.use('/product', inventoryRouter)
 
+const saleRouter = require('./routes/sales')
+app.use('/sales', saleRouter)
+
 // const salesRouter = require('./routes/sales')
 // app.use('/sales', salesRouter)
 

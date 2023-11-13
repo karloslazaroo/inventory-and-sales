@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
 
 const saleSchema = new mongoose.Schema({
-    product: {
-        type: mongoose.Schema.TypesObjectId,
-        ref: 'Product'
-    },
-    quantitySold: Number,
-    date: {
-        type: Date,
-        default: Date.now
-    }
-})
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  },
+  quantitySold: {
+    type: Number,
+    required: true
+  },
+  saleDate: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-module.exports = mongoose.model('Sales', saleSchema);
+const Sales = mongoose.model('Sales', saleSchema);
+
+module.exports = Sales;
+
 
