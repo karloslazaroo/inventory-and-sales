@@ -26,6 +26,6 @@ app.use('/product', inventoryRouter)
 // const salesRouter = require('./routes/sales')
 // app.use('/sales', salesRouter)
 
-app.listen(5000, () => {
+app.listen(4000, () => {
     console.log('Server is running');
 });
