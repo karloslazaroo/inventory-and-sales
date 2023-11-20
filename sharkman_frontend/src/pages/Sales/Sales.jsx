@@ -1,9 +1,3 @@
-{/* <strong>Product SKU:</strong> {product.product_sku},
-<strong>Product Name:</strong> {product.product_name},
-<strong> Cost Price:</strong> {product.cost_price},
-<strong> Sales Price:</strong> ${product.sales_price},
-<strong> Quantity:</strong> {product.quantity} */}
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -64,29 +58,30 @@ const Sales = () => {
     setCustomerName(e.target.value);
   };
 
-
-
   const handleSale = async () => {
+
     try {
 
     
 
-    
     // Validate that at least one product is selected
     if (selectedProducts.length === 0) {
       alert('Please select at least one product for the sale.');
       return;
     }
 
+    //prepare the sale data
     const saleData = {
       customerName,
-      products: selectedProducts.map((product =>({
+      products: selectedProducts.map((product) => ({
         productId: product._id,
         quantitySold: quantitySold[product._id]
-      })))
-    }
+      }))
+    };
 
+    // Make a POST request to create the sale on the server
     const response = await axios.post('http://localhost:4000/sales', saleData);
+    console.log('Sale made successfully:', response.data);
 
     // Make a sale for each selected product
     const salesPromises = selectedProducts.map(async (product) => {
@@ -100,7 +95,6 @@ const Sales = () => {
         };
 
         await axios.patch(`http://localhost:4000/product/${productId}`, updatedProduct);
-        console.log ('Sale made successfully: ', response.data);
 
         setProducts((prevProducts) =>
           prevProducts.map((p) => (p._id === productId ? updatedProduct : p))
@@ -109,17 +103,16 @@ const Sales = () => {
     });
 
     // Wait for all sales to complete before proceeding
-    // Promise.all(salesPromises).then(() => {
-    //   // Clear form after successful sale
-    //   setSelectedProducts([]);
-    //   setQuantitySold({});
-    //   setCustomerName('');
-    // });
+    Promise.all(salesPromises).then(() => {
+      // Clear form after successful sale
+      setSelectedProducts([]);
+      setQuantitySold({});
+      setCustomerName('');
+    });
   } catch (error) {
     console.error('Error making sale:', error);
     alert('Error making sale. Please try again.');
-  }
-
+    };
   };
 
   return (
@@ -143,7 +136,7 @@ const Sales = () => {
             <option value="">Select a product</option>
             {products.map((product) => (
               <option key={product._id} value={product._id}>
-                {product.product_name} - ${product.sales_price} - ${product.cost_price}
+                {product.product_name} - ${product.sales_price}
               </option>
             ))}
           </select>
@@ -155,11 +148,11 @@ const Sales = () => {
         <ul>
           {selectedProducts.map((product) => (
             <li key={product._id}>
-             <strong>Product SKU:</strong> {product.product_sku},
-            <strong>Product Name:</strong> {product.product_name},
-            <strong> Cost Price:</strong> {product.cost_price},
-            <strong> Sales Price:</strong> ${product.sales_price},
-            <strong> Quantity:</strong> {product.quantity}
+              <strong>Product SKU:</strong> {product.product_sku},
+              <strong>Product Name:</strong> {product.product_name},
+              <strong> Cost Price</strong> {product.cost_price},
+              <strong> Sales Price:</strong> ${product.sales_price},
+              <strong> Quantity:</strong> {product.quantity}
               <div>
                 <button onClick={() => handleDeselect(product)}>Remove</button>
                 <input

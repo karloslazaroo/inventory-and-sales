@@ -3,10 +3,8 @@ const mongoose = require('mongoose');
 const saleSchema = new mongoose.Schema({
   customerName: {
     type: String,
-    required: true
-  },
-  products: [
-    {
+    require: true
+  },  
   productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
@@ -20,11 +18,8 @@ const saleSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-}],
 });
 
-const Sales = mongoose.model('Sales', saleSchema);
+const Sale = mongoose.model('Sale', saleSchema);
 
-module.exports = Sales;
-
-
+module.exports = Sale;

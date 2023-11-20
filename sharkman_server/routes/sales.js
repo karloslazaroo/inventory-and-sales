@@ -3,28 +3,41 @@ const router = express.Router();
 const Sale = require('../models/Sales');
 const Product = require('../models/Product'); // Assuming you have a Product model
 
+
+
+
+router.get('/', async (req, res) => {
+    try {
+      const sales = await Sale.find().populate('products.productId');
+      res.json(sales);
+    } catch (error) {
+      console.error('Error fetching sales:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
+
 // Route to make a sale
-router.post('/sales', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const { customerName, products } = req.body;
+    const { customerName, productId, quantitySold } = req.body;
 
     // Check if the product exists
-    // const product = await Product.findById(productId);
-    // if (!product) {
-    //   return res.status(404).json({ message: 'Product not found' });
-    // }
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
 
-    // // Check if there is enough quantity to sell
-    // if (quantitySold > product.quantity) {
-    //   return res.status(400).json({ message: 'Not enough quantity to sell' });
-    // }
+    // Check if there is enough quantity to sell
+    if (quantitySold > product.quantity) {
+      return res.status(400).json({ message: 'Not enough quantity to sell' });
+    }
 
     // Create a new sale
     const sale = new Sale({
       customerName,
-      products
+      productId,
+      quantitySold
     });
-
 
     // Save the sale to the database
     await sale.save();
