@@ -26,3 +26,21 @@ Content-Type: application/json
     "cost_price": 12345,
     "sales_price": 500
 }
+
+
+###
+POST http://localhost:4000/sales/
+Content-Type: application/json 
+{
+    "customerName": "Karlos",
+    "productID": "655210a967ddb5cdfd0ab1fc",
+    "quantitySold": 1,
+    "saleData": 
+
+}
+
+###
+GET http://localhost:4000/sales/
+
+###
+GET http://localhost:4000/sales/
