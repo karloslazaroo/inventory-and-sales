@@ -29,18 +29,18 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:4000/sales/
+POST http://localhost:4000/api/sales/
 Content-Type: application/json 
 {
     "customerName": "Karlos",
     "productID": "655210a967ddb5cdfd0ab1fc",
     "quantitySold": 1,
-    "saleData": 
+ 
 
 }
 
 ###
-GET http://localhost:4000/sales/
+GET http://localhost:4000/api/sales/
 
 ###
 GET http://localhost:4000/sales/

@@ -1,24 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Sales = () => {
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [quantitySold, setQuantitySold] = useState({});
-  const [customerName, setCustomerName] = useState('');
-  const [selectedProductId, setSelectedProductId] = useState('');
+  const [customerName, setCustomerName] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState("");
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = () => {
-    axios.get('http://localhost:4000/product')
-      .then(response => {
+    axios
+      .get("http://localhost:4000/api/product")
+      .then((response) => {
         setProducts(response.data.reverse());
       })
-      .catch(error => {
-        console.error('Error fetching products:', error);
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+
+    axios
+      .get("http://localhost:4000/api/sales")
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -29,7 +39,7 @@ const Sales = () => {
 
   const handleSelect = () => {
     if (!selectedProductId) {
-      alert('Please select a product.');
+      alert("Please select a product.");
       return;
     }
 
@@ -37,12 +47,14 @@ const Sales = () => {
     if (!selectedProducts.some((p) => p._id === product._id)) {
       setSelectedProducts([...selectedProducts, product]);
       setQuantitySold({ ...quantitySold, [product._id]: 1 });
-      setSelectedProductId('');
+      setSelectedProductId("");
     }
   };
 
   const handleDeselect = (product) => {
-    const updatedSelectedProducts = selectedProducts.filter((p) => p._id !== product._id);
+    const updatedSelectedProducts = selectedProducts.filter(
+      (p) => p._id !== product._id
+    );
     const updatedQuantitySold = { ...quantitySold };
     delete updatedQuantitySold[product._id];
 
@@ -59,60 +71,62 @@ const Sales = () => {
   };
 
   const handleSale = async () => {
-
     try {
-
-    
-
-    // Validate that at least one product is selected
-    if (selectedProducts.length === 0) {
-      alert('Please select at least one product for the sale.');
-      return;
-    }
-
-    //prepare the sale data
-    const saleData = {
-      customerName,
-      products: selectedProducts.map((product) => ({
-        productId: product._id,
-        quantitySold: quantitySold[product._id]
-      }))
-    };
-
-    // Make a POST request to create the sale on the server
-    const response = await axios.post('http://localhost:4000/sales', saleData);
-    console.log('Sale made successfully:', response.data);
-
-    // Make a sale for each selected product
-    const salesPromises = selectedProducts.map(async (product) => {
-      const productId = product._id;
-      const quantityToSell = quantitySold[productId];
-
-      if (quantityToSell > 0 && quantityToSell <= product.quantity) {
-        const updatedProduct = {
-          ...product,
-          quantity: product.quantity - quantityToSell
-        };
-
-        await axios.patch(`http://localhost:4000/product/${productId}`, updatedProduct);
-
-        setProducts((prevProducts) =>
-          prevProducts.map((p) => (p._id === productId ? updatedProduct : p))
-        );
+      // Validate that at least one product is selected
+      if (selectedProducts.length === 0) {
+        alert("Please select at least one product for the sale.");
+        return;
       }
-    });
 
-    // Wait for all sales to complete before proceeding
-    Promise.all(salesPromises).then(() => {
-      // Clear form after successful sale
-      setSelectedProducts([]);
-      setQuantitySold({});
-      setCustomerName('');
-    });
-  } catch (error) {
-    console.error('Error making sale:', error);
-    alert('Error making sale. Please try again.');
-    };
+      //prepare the sale data
+      const saleData = {
+        customerName,
+        products: selectedProducts.map((product) => ({
+          productId: product._id,
+          quantitySold: quantitySold[product._id],
+        })),
+      };
+
+      // Make a POST request to create the sale on the server
+      const response = await axios.post(
+        "http://localhost:4000/api/sales",
+        saleData
+      );
+      console.log("Sale made successfully:", response.data);
+
+      // Make a sale for each selected product
+      const salesPromises = selectedProducts.map(async (product) => {
+        const productId = product._id;
+        const quantityToSell = quantitySold[productId];
+
+        if (quantityToSell > 0 && quantityToSell <= product.quantity) {
+          const updatedProduct = {
+            ...product,
+            quantity: product.quantity - quantityToSell,
+          };
+
+          await axios.patch(
+            `http://localhost:4000/api/product/${productId}`,
+            updatedProduct
+          );
+
+          setProducts((prevProducts) =>
+            prevProducts.map((p) => (p._id === productId ? updatedProduct : p))
+          );
+        }
+      });
+
+      // Wait for all sales to complete before proceeding
+      Promise.all(salesPromises).then(() => {
+        // Clear form after successful sale
+        setSelectedProducts([]);
+        setQuantitySold({});
+        setCustomerName("");
+      });
+    } catch (error) {
+      console.error("Error making sale:", error);
+      alert("Error making sale. Please try again.");
+    }
   };
 
   return (
@@ -158,7 +172,9 @@ const Sales = () => {
                 <input
                   type="number"
                   value={quantitySold[product._id]}
-                  onChange={(e) => handleQuantityChange(product, parseInt(e.target.value, 10))}
+                  onChange={(e) =>
+                    handleQuantityChange(product, parseInt(e.target.value, 10))
+                  }
                   min="1"
                   max={product.quantity}
                 />
@@ -173,7 +189,8 @@ const Sales = () => {
             <ul>
               {selectedProducts.map((product) => (
                 <li key={product._id}>
-                  <strong>{product.name}:</strong> {quantitySold[product._id]} units
+                  <strong>{product.name}:</strong> {quantitySold[product._id]}{" "}
+                  units
                 </li>
               ))}
             </ul>

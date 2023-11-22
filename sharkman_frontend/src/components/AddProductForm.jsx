@@ -26,7 +26,7 @@ const AddProductForm = ({ addProductToList, closeModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:4000/product', formData)
+    axios.post('http://localhost:4000/api/product', formData)
       .then(response => {
         console.log('Product added:', response.data);
         addProductToList(response.data);

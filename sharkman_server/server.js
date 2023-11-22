@@ -21,10 +21,10 @@ db.once('open', ()=> {
 
 
 const inventoryRouter = require('./routes/product')
-app.use('/product', inventoryRouter)
+app.use('/api/product', inventoryRouter)
 
 const salesRouter = require('./routes/sales')
-app.use('/sales', salesRouter)
+app.use('/api/sales', salesRouter)
 
 
 

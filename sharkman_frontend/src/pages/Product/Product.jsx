@@ -21,7 +21,7 @@ function Product() {
   useEffect(() => {
     console.log("Fetching products...");
     axios
-      .get("http://localhost:4000/product")
+      .get("http://localhost:4000/api/product")
       .then((response) => {
         setProducts(response.data.reverse());
       })
@@ -72,7 +72,7 @@ function Product() {
   // };
 
   const handleUpdate = (updatedProduct) => {
-    axios.put(`http://localhost:4000/product/${selectedProduct._id}`, updatedProduct)
+    axios.put(`http://localhost:4000/api/product/${selectedProduct._id}`, updatedProduct)
       .then(response => {
         console.log('Product updated:', response.data);
         setProducts(products.map(product => 
@@ -87,7 +87,7 @@ function Product() {
 
   const handleDelete = (productId) => {
     axios
-      .delete(`http://localhost:4000/product/${productId}`)
+      .delete(`http://localhost:4000/api/product/${productId}`)
       .then((response) => {
         console.log("Product deleted:", response.data);
         setProducts(products.filter((product) => product._id !== productId));
